@@ -1,0 +1,65 @@
+[
+  {
+    "id": "project-alisekris",
+    "title": "Alisekris",
+    "description": "Next.js-приложение на TypeScript с Prisma, rich text editor и расширяемой административной частью.",
+    "subtitle": "Next.js + Prisma workspace",
+    "accent": "#2563eb",
+    "link": "../alisekris/",
+    "status": "Development"
+  },
+  {
+    "id": "project-logistics",
+    "title": "Logistics",
+    "description": "SaaS-панель для управления автопарком и supply chain, построенная на Next.js 15 и React 19.",
+    "subtitle": "Fleet & supply chain SaaS",
+    "accent": "#0f766e",
+    "link": "../logistics/",
+    "status": "Development"
+  },
+  {
+    "id": "project-orgstructure",
+    "title": "OrgStructure",
+    "description": "Интерактивный редактор оргструктуры компании с управлением узлами, видимостью данных и импортом.",
+    "subtitle": "Interactive company chart",
+    "accent": "#0284c7",
+    "link": "../orgstructure/",
+    "status": "Ready"
+  },
+  {
+    "id": "project-compben",
+    "title": "CompBen",
+    "description": "Одностраничный маркетинговый сайт для продукта о компенсациях и льготах, реализованный на HTML/CSS/JS.",
+    "subtitle": "Marketing site",
+    "accent": "#16a34a",
+    "link": "../compben/",
+    "status": "Ready"
+  },
+  {
+    "id": "project-cerebro",
+    "title": "Cerebro",
+    "description": "Браузерная игра-симулятор с React через Babel CDN и кастомным интерфейсом поверх статического HTML.",
+    "subtitle": "Browser strategy game",
+    "accent": "#7c3aed",
+    "link": "../cerebro/",
+    "status": "Development"
+  },
+  {
+    "id": "project-bioage",
+    "title": "BioAge",
+    "description": "React + TypeScript + Vite приложение под аналитику и визуализацию данных с использованием Recharts.",
+    "subtitle": "Analytics dashboard",
+    "accent": "#0891b2",
+    "link": "../bioage/",
+    "status": "Hold"
+  },
+  {
+    "id": "project-subscriptions",
+    "title": "Subscription Tracker",
+    "description": "Vite-приложение для отслеживания подписок и расходов, с подготовленным деплоем через GitHub Pages.",
+    "subtitle": "Tracking recurring costs",
+    "accent": "#ea580c",
+    "link": "../subscription-tracker/",
+    "status": "Hold"
+  }
+]

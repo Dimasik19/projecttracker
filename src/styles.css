@@ -1,0 +1,614 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
+
+:root {
+  --bg: #e7dfd1;
+  --bg-soft: #ded4c3;
+  --surface: #f4efe6;
+  --surface-strong: #ebe3d6;
+  --surface-muted: #e0d7c8;
+  --border: #1b1b1b;
+  --text: #171717;
+  --text-soft: #303030;
+  --title: #111111;
+  --accent: #161616;
+  --accent-strong: #000000;
+  --development: #d97706;
+  --ready: #15803d;
+  --hold: #555555;
+  --shadow: 8px 8px 0 rgba(17, 17, 17, 0.12);
+  --radius-lg: 0;
+  --radius-md: 0;
+  --radius-sm: 0;
+  --font-ui: "Roboto", "Helvetica Neue", Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font-ui);
+  background: var(--bg);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+.shell {
+  width: min(1400px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 40px;
+}
+
+.hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius-lg) + 4px);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.eyebrow,
+.panel-overline {
+  margin: 0 0 10px;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.section-heading h2,
+.tasks-empty h3,
+.empty-state h3,
+.task-item h3,
+.card-body h3 {
+  margin: 0;
+  color: var(--title);
+}
+
+.hero-copy,
+.section-heading p,
+.card-description,
+.tasks-description,
+.placeholder-panel p,
+.tasks-empty p,
+.empty-state p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.hero-copy {
+  max-width: 68ch;
+  margin-top: 14px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 420px);
+  gap: 24px;
+  align-items: start;
+}
+
+.projects-panel,
+.tasks-panel {
+  min-width: 0;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 18px;
+}
+
+.project-card,
+.tasks-card,
+.placeholder-panel,
+.empty-state,
+.modal-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.project-card {
+  overflow: hidden;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.project-card:hover,
+.project-card.selected {
+  transform: translateY(-2px);
+  border-color: var(--border);
+  box-shadow: 10px 10px 0 rgba(17, 17, 17, 0.18);
+}
+
+.project-card.dragging {
+  opacity: 0.55;
+}
+
+.project-card.drop-target {
+  border-color: var(--accent-strong);
+  box-shadow: 0 0 0 3px rgba(23, 23, 23, 0.12);
+}
+
+.card-media {
+  position: relative;
+  height: 54px;
+  overflow: hidden;
+  background: var(--surface-strong);
+  border-bottom: 1px solid var(--border);
+}
+
+.card-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 18px 18px 12px;
+}
+
+.card-topline,
+.icon-actions,
+.editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-topline {
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.status-badge {
+  border: 1px solid currentColor;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.status-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.status-development {
+  color: var(--development);
+  background: transparent;
+}
+
+.status-ready {
+  color: var(--ready);
+  background: transparent;
+}
+
+.status-hold {
+  color: var(--hold);
+  background: transparent;
+}
+
+.icon-button,
+.text-button,
+.progress-segment,
+.status-option,
+.progress-chip {
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.icon-button,
+.text-button,
+.primary-button,
+.progress-segment {
+  cursor: pointer;
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 0;
+  transition: background 160ms ease, transform 160ms ease, border-color 160ms ease;
+}
+
+.icon-button:hover,
+.text-button:hover,
+.progress-segment:hover,
+.status-option:hover,
+.progress-chip:hover {
+  transform: translateY(-1px);
+  border-color: var(--border);
+}
+
+.icon-button.danger:hover {
+  border-color: var(--border);
+  background: #d7cdc0;
+}
+
+.card-description {
+  margin-top: 10px;
+  min-height: 72px;
+}
+
+.project-link {
+  display: inline-flex;
+  margin-top: 16px;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.project-link:hover {
+  color: var(--title);
+}
+
+.tasks-card,
+.placeholder-panel,
+.empty-state {
+  padding: 24px;
+}
+
+.tasks-card {
+  position: sticky;
+  top: 20px;
+}
+
+.task-composer,
+.task-editor,
+.project-form,
+.project-inline-editor {
+  display: grid;
+  gap: 14px;
+}
+
+.project-status-editor {
+  margin-top: 18px;
+}
+
+.project-inline-editor {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+}
+
+.status-editor-label {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.task-composer {
+  grid-template-columns: minmax(0, 1fr) auto;
+  margin: 22px 0 18px;
+}
+
+.task-list {
+  display: grid;
+  gap: 12px;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-strong);
+}
+
+.task-content {
+  min-width: 0;
+  flex: 1;
+}
+
+.task-item h3 {
+  font-size: 1rem;
+}
+
+.task-progress-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  max-width: 220px;
+}
+
+.task-progress-field > span {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.progress-inline,
+.progress-picker,
+.status-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.progress-inline {
+  margin-top: 12px;
+}
+
+.progress-segment,
+.status-option,
+.progress-chip {
+  border-radius: 0;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.progress-segment {
+  padding: 8px 10px;
+}
+
+.progress-segment.active,
+.status-option.active,
+.progress-chip.active {
+  border-color: var(--border);
+  background: #171717;
+  color: #f4efe6;
+}
+
+.status-option:has(input:checked),
+.progress-chip:has(input:checked) {
+  border-color: var(--border);
+  background: #171717;
+  color: #f4efe6;
+}
+
+.task-editor {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  opacity: 0.54;
+}
+
+.task-editor.visible {
+  opacity: 1;
+}
+
+.project-form label:not(.status-option),
+.project-inline-editor label:not(.status-option),
+.status-fieldset {
+  display: grid;
+  gap: 8px;
+}
+
+.project-form label:not(.status-option) > span,
+.project-inline-editor label:not(.status-option) > span,
+.status-fieldset legend {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.status-fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.status-option,
+.progress-chip {
+  position: relative;
+  overflow: hidden;
+}
+
+button.status-option {
+  padding: 0;
+  cursor: pointer;
+}
+
+.status-option input,
+.progress-chip input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.status-option span,
+.progress-chip span {
+  display: inline-flex;
+  padding: 10px 14px;
+  color: inherit;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="file"],
+textarea,
+select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #f8f3ea;
+  color: var(--text);
+  outline: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--border);
+  box-shadow: 4px 4px 0 rgba(17, 17, 17, 0.1);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.primary-button,
+.text-button {
+  padding: 13px 18px;
+  border-radius: 0;
+  border: 1px solid transparent;
+}
+
+.primary-button {
+  background: #171717;
+  color: #f4efe6;
+  font-weight: 800;
+  box-shadow: none;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+}
+
+.text-button {
+  background: transparent;
+  color: var(--text);
+}
+
+.empty-state,
+.placeholder-panel,
+.tasks-empty {
+  text-align: center;
+}
+
+.empty-state,
+.placeholder-panel {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+}
+
+.empty-illustration {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 14px;
+  border-radius: 0;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 23, 23, 0.32);
+}
+
+.modal-card {
+  width: min(620px, 100%);
+  padding: 24px;
+}
+
+@media (max-width: 960px) {
+  .hero,
+  .workspace {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .hero {
+    align-items: start;
+  }
+
+  .tasks-card {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .shell {
+    width: min(100% - 20px, 1400px);
+    padding-top: 18px;
+  }
+
+  .hero,
+  .tasks-card,
+  .placeholder-panel,
+  .empty-state,
+  .modal-card {
+    padding: 18px;
+  }
+
+  .task-composer {
+    grid-template-columns: 1fr;
+  }
+
+  .task-item {
+    flex-direction: column;
+  }
+
+  .card-description {
+    min-height: auto;
+  }
+}
