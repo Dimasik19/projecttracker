@@ -172,18 +172,19 @@ a {
 }
 
 .card-media {
-  position: relative;
-  height: 54px;
-  overflow: hidden;
-  background: var(--surface-strong);
+  display: flex;
+  align-items: center;
+  min-height: 64px;
+  padding: 14px 18px;
+  background: #2f2f2f;
   border-bottom: 1px solid var(--border);
 }
 
-.card-media img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.card-media-title {
+  color: #f4efe6;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .card-body {

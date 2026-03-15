@@ -101,7 +101,6 @@ export class ProjectTrackerApp {
 
   private renderProjectCard(project: Project): string {
     const isSelected = this.selectedProjectId === project.id;
-    const screenshot = this.normalizeProjectScreenshot(project.screenshot, project.title);
 
     return `
       <article
@@ -111,7 +110,7 @@ export class ProjectTrackerApp {
         draggable="true"
       >
         <div class="card-media">
-          <img src="${screenshot}" alt="Скриншот проекта ${this.escapeHtml(project.title)}" />
+          <span class="card-media-title">${this.escapeHtml(project.title)}</span>
         </div>
         <div class="card-body">
           <div class="card-topline">
@@ -696,19 +695,6 @@ export class ProjectTrackerApp {
     `;
 
     return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-  }
-
-  private normalizeProjectScreenshot(screenshot: string, title: string): string {
-    if (!screenshot) {
-      return this.buildFallbackPlaceholder(title);
-    }
-
-    // Replace older generated placeholders that still contain the green accent line.
-    if (screenshot.startsWith('data:image/svg+xml') && screenshot.includes('4ade80')) {
-      return this.buildFallbackPlaceholder(title);
-    }
-
-    return screenshot;
   }
 
   private escapeHtml(value: string): string {
