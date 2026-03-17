@@ -1,6 +1,6 @@
 import './styles.css';
 
-import { createId, getStatusLabel } from './projects';
+import { createId, getProjectProgress, getStatusLabel } from './projects';
 import { loadState, saveState } from './storage';
 import { createTask, TASK_PROGRESS_VALUES } from './tasks';
 import type {
@@ -101,6 +101,7 @@ export class ProjectTrackerApp {
 
   private renderProjectCard(project: Project): string {
     const isSelected = this.selectedProjectId === project.id;
+    const progress = getProjectProgress(project.id, this.state.tasks);
 
     return `
       <article
@@ -118,9 +119,15 @@ export class ProjectTrackerApp {
               <span class="status-dot"></span>
               ${getStatusLabel(project.status)}
             </span>
-            <div class="icon-actions">
-              <button class="icon-button" type="button" data-action="edit-project" data-project-id="${project.id}" aria-label="Редактировать проект">✎</button>
-              <button class="icon-button danger" type="button" data-action="delete-project" data-project-id="${project.id}" aria-label="Удалить проект">🗑</button>
+            <div class="card-topline-actions">
+              <div
+                class="project-progress-ring"
+                style="--progress:${progress}%;"
+                aria-label="Выполнение проекта ${progress}%"
+                title="Средний прогресс задач: ${progress}%"
+              >
+                <span>${progress}%</span>
+              </div>
             </div>
           </div>
           <h3>${this.escapeHtml(project.title)}</h3>
@@ -135,7 +142,6 @@ export class ProjectTrackerApp {
     const isEditingTask = this.taskEditor.taskId !== null;
     const isEditingProject =
       this.projectEditor.mode === 'edit' && this.projectEditor.projectId === project.id;
-    const screenshotValue = project.screenshot.startsWith('data:image') ? '' : project.screenshot;
 
     return `
         <div class="tasks-card">
@@ -171,19 +177,11 @@ export class ProjectTrackerApp {
                     <span>Ссылка на проект</span>
                     <input type="url" name="link" placeholder="https://example.com" value="${this.escapeAttribute(project.link)}" />
                   </label>
-                  <label>
-                    <span>Скриншот по URL</span>
-                    <input type="url" name="screenshot" placeholder="https://..." value="${this.escapeAttribute(screenshotValue)}" />
-                  </label>
-                  <label>
-                    <span>Или загрузите изображение</span>
-                    <input type="file" name="screenshotFile" accept="image/*" />
-                  </label>
                   <fieldset class="status-fieldset">
                     <legend>Статус проекта</legend>
                     <div class="status-picker">
                       ${STATUS_OPTIONS.map((status) => `
-                        <label class="status-option ${project.status === status ? 'active' : ''}">
+                        <label class="status-option status-option-${status.toLowerCase()} ${project.status === status ? 'active' : ''}">
                           <input type="radio" name="status" value="${status}" ${project.status === status ? 'checked' : ''} />
                           <span>${getStatusLabel(status)}</span>
                         </label>
@@ -193,6 +191,7 @@ export class ProjectTrackerApp {
                   <div class="editor-actions">
                     <button class="primary-button" type="submit">Сохранить проект</button>
                     <button class="text-button" type="button" data-action="cancel-project-edit" data-project-id="${project.id}">Отмена</button>
+                    <button class="text-button danger" type="button" data-action="delete-project" data-project-id="${project.id}">Удалить проект</button>
                   </div>
                 </form>
               `
@@ -214,7 +213,7 @@ export class ProjectTrackerApp {
             `
             : `
               <div class="task-list">
-                ${tasks.map((task) => this.renderTaskItem(task)).join('')}
+                ${tasks.map((task) => this.renderTaskItem(task, this.taskEditor.taskId === task.id)).join('')}
               </div>
             `
         }
@@ -245,22 +244,33 @@ export class ProjectTrackerApp {
               `).join('')}
             </select>
           </label>
-          <button class="primary-button" type="submit" ${isEditingTask ? '' : 'disabled'}>Сохранить задачу</button>
+          <div class="editor-actions">
+            <button class="primary-button" type="submit" ${isEditingTask ? '' : 'disabled'}>Сохранить задачу</button>
+            ${
+              isEditingTask
+                ? `<button class="text-button danger" type="button" data-action="delete-task" data-task-id="${this.taskEditor.taskId}">Удалить задачу</button>`
+                : ''
+            }
+          </div>
         </form>
       </div>
     `;
   }
 
-  private renderTaskItem(task: Task): string {
+  private renderTaskItem(task: Task, isSelected: boolean): string {
     return `
-      <article class="task-item">
+      <article
+        class="task-item ${isSelected ? 'selected' : ''}"
+        data-action="edit-task"
+        data-task-id="${task.id}"
+        role="button"
+        tabindex="0"
+        aria-label="Редактировать задачу ${this.escapeAttribute(task.title)}"
+      >
         <div class="task-content">
-          <h3>${this.escapeHtml(task.title)} : ${task.progress}%</h3>
+          <h3>${this.escapeHtml(task.title)}</h3>
         </div>
-        <div class="icon-actions">
-          <button class="icon-button" type="button" data-action="edit-task" data-task-id="${task.id}" aria-label="Редактировать задачу">✎</button>
-          <button class="icon-button danger" type="button" data-action="delete-task" data-task-id="${task.id}" aria-label="Удалить задачу">🗑</button>
-        </div>
+        <span class="task-progress-value">${task.progress}%</span>
       </article>
     `;
   }
@@ -309,7 +319,7 @@ export class ProjectTrackerApp {
             <legend>Статус проекта</legend>
             <div class="status-picker">
               ${STATUS_OPTIONS.map((status) => `
-                <label class="status-option ${values.status === status ? 'active' : ''}">
+                <label class="status-option status-option-${status.toLowerCase()} ${values.status === status ? 'active' : ''}">
                   <input type="radio" name="status" value="${status}" ${values.status === status ? 'checked' : ''} />
                   <span>${getStatusLabel(status)}</span>
                 </label>
@@ -334,6 +344,17 @@ export class ProjectTrackerApp {
         event.preventDefault();
         event.stopPropagation();
         this.handleAction(action, target);
+      });
+    });
+
+    this.root.querySelectorAll<HTMLElement>('.task-item[data-action="edit-task"]').forEach((taskItem) => {
+      taskItem.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') {
+          return;
+        }
+
+        event.preventDefault();
+        this.handleAction('edit-task', taskItem);
       });
     });
 
@@ -605,27 +626,15 @@ export class ProjectTrackerApp {
     const title = String(formData.get('title') ?? '').trim();
     const description = String(formData.get('description') ?? '').trim();
     const link = String(formData.get('link') ?? '').trim();
-    const screenshotUrl = String(formData.get('screenshot') ?? '').trim();
     const status = String(formData.get('status') ?? project.status) as ProjectStatus;
-    const screenshotFile = formData.get('screenshotFile');
 
     if (!title || !description) {
       return;
     }
 
-    let screenshot = screenshotUrl || project.screenshot;
-    if (screenshotFile instanceof File && screenshotFile.size > 0) {
-      screenshot = await this.readFileAsDataUrl(screenshotFile);
-    }
-
-    if (!screenshot) {
-      screenshot = this.buildFallbackPlaceholder(title);
-    }
-
     project.title = title;
     project.description = description;
     project.link = link;
-    project.screenshot = screenshot;
     project.status = status;
     this.projectEditor = { mode: 'idle', projectId: null };
     this.persist();

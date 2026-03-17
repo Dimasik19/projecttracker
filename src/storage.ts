@@ -21,7 +21,13 @@ export function loadState(): AppState {
   try {
     const parsed = JSON.parse(saved) as unknown;
     if (isValidState(parsed)) {
-      return parsed;
+      const existingTaskIds = new Set(parsed.tasks.map((task) => task.id));
+      const missingSeedTasks = seedState.tasks.filter((task) => !existingTaskIds.has(task.id));
+
+      return {
+        projects: parsed.projects,
+        tasks: [...parsed.tasks, ...missingSeedTasks],
+      };
     }
   } catch {
     localStorage.removeItem(STORAGE_KEY);
