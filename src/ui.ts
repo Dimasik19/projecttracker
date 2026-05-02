@@ -132,7 +132,14 @@ export class ProjectTrackerApp {
           </div>
           <h3>${this.escapeHtml(project.title)}</h3>
           <p class="card-description">${this.escapeHtml(project.description)}</p>
-          <a class="project-link" href="${project.link}" target="_blank" rel="noreferrer">Открыть проект</a>
+          <button
+            class="project-link"
+            type="button"
+            data-action="open-project"
+            data-project-id="${project.id}"
+          >
+            Открыть проект
+          </button>
         </div>
       </article>
     `;
@@ -175,7 +182,7 @@ export class ProjectTrackerApp {
                   </label>
                   <label>
                     <span>Ссылка на проект</span>
-                    <input type="url" name="link" placeholder="https://example.com" value="${this.escapeAttribute(project.link)}" />
+                    <input type="text" name="link" placeholder="https://example.com или ../project/" value="${this.escapeAttribute(project.link)}" />
                   </label>
                   <fieldset class="status-fieldset">
                     <legend>Статус проекта</legend>
@@ -305,7 +312,7 @@ export class ProjectTrackerApp {
           </label>
           <label>
             <span>Ссылка на проект</span>
-            <input type="url" name="link" placeholder="https://example.com" value="${this.escapeAttribute(values.link)}" />
+            <input type="text" name="link" placeholder="https://example.com или ../project/" value="${this.escapeAttribute(values.link)}" />
           </label>
           <label>
             <span>Скриншот по URL</span>
@@ -486,6 +493,15 @@ export class ProjectTrackerApp {
           this.taskEditor = { taskId: null, title: '', progress: 0 };
           this.projectEditor = { mode: 'idle', projectId: null };
           this.render();
+        }
+        return;
+      }
+      case 'open-project': {
+        const projectId = element.dataset.projectId;
+        const project = this.state.projects.find((item) => item.id === projectId);
+        const link = project?.link.trim();
+        if (link) {
+          window.open(link, '_blank', 'noopener,noreferrer');
         }
         return;
       }

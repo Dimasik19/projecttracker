@@ -14,7 +14,7 @@
     "description": "SaaS-панель для управления автопарком и supply chain, построенная на Next.js 15 и React 19.",
     "subtitle": "Fleet & supply chain SaaS",
     "accent": "#0f766e",
-    "link": "../logistics/",
+    "link": "https://cargo-atlas.vercel.app/",
     "status": "Development"
   },
   {
@@ -23,7 +23,7 @@
     "description": "Интерактивный редактор оргструктуры компании с управлением узлами, видимостью данных и импортом.",
     "subtitle": "Interactive company chart",
     "accent": "#0284c7",
-    "link": "../orgstructure/",
+    "link": "https://dimasik19.github.io/Orgstructure/",
     "status": "Ready"
   },
   {
@@ -32,7 +32,7 @@
     "description": "Одностраничный маркетинговый сайт для продукта о компенсациях и льготах, реализованный на HTML/CSS/JS.",
     "subtitle": "Marketing site",
     "accent": "#16a34a",
-    "link": "../compben/",
+    "link": "https://www.compben.ru/",
     "status": "Ready"
   },
   {
@@ -59,7 +59,61 @@
     "description": "Vite-приложение для отслеживания подписок и расходов, с подготовленным деплоем через GitHub Pages.",
     "subtitle": "Tracking recurring costs",
     "accent": "#ea580c",
-    "link": "../subscription-tracker/",
+    "link": "https://dimasik19.github.io/subscription-tracker/",
     "status": "Hold"
+  },
+  {
+    "id": "project-grading",
+    "title": "Grading",
+    "description": "Инструмент для настройки и просмотра грейдов, матриц уровней и критериев оценки сотрудников.",
+    "subtitle": "Role levels & grading",
+    "accent": "#4f46e5",
+    "link": "https://dimasik19.github.io/grading/",
+    "status": "Development"
+  },
+  {
+    "id": "project-hr-dashboard",
+    "title": "HR Dashboard",
+    "description": "Аналитическая HR-панель для мониторинга численности, фонда оплаты труда и бюджетных показателей.",
+    "subtitle": "People analytics dashboard",
+    "accent": "#0d9488",
+    "link": "../hr_dashboard/",
+    "status": "Development"
+  },
+  {
+    "id": "project-job-offer",
+    "title": "Job Offer",
+    "description": "Приложение для подготовки, просмотра и согласования предложений кандидатам.",
+    "subtitle": "Candidate offer workflow",
+    "accent": "#9333ea",
+    "link": "https://dimasik19.github.io/job_offer_builder/",
+    "status": "Development"
+  },
+  {
+    "id": "project-retro-auto",
+    "title": "Retro Auto",
+    "description": "Веб-проект про ретро-автомобили с визуальной витриной, карточками моделей и атмосферной подачей.",
+    "subtitle": "Classic car showcase",
+    "accent": "#b45309",
+    "link": "https://retroauto.vercel.app/",
+    "status": "Development"
+  },
+  {
+    "id": "project-skills-based-grading",
+    "title": "Skills Based Grading",
+    "description": "Система грейдинга на основе навыков с оценкой компетенций, уровней и профилей ролей.",
+    "subtitle": "Skills-first assessment",
+    "accent": "#2563eb",
+    "link": "https://skills-based-grading.vercel.app/",
+    "status": "Development"
+  },
+  {
+    "id": "project-total-cash",
+    "title": "Total Cash",
+    "description": "Калькулятор и аналитика совокупного денежного вознаграждения с разбивкой по компонентам дохода.",
+    "subtitle": "Compensation calculator",
+    "accent": "#16a34a",
+    "link": "https://dimasik19.github.io/totalcash/",
+    "status": "Development"
   }
 ]

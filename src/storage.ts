@@ -21,11 +21,13 @@ export function loadState(): AppState {
   try {
     const parsed = JSON.parse(saved) as unknown;
     if (isValidState(parsed)) {
+      const existingProjectIds = new Set(parsed.projects.map((project) => project.id));
+      const missingSeedProjects = seedState.projects.filter((project) => !existingProjectIds.has(project.id));
       const existingTaskIds = new Set(parsed.tasks.map((task) => task.id));
       const missingSeedTasks = seedState.tasks.filter((task) => !existingTaskIds.has(task.id));
 
       return {
-        projects: parsed.projects,
+        projects: [...parsed.projects, ...missingSeedProjects],
         tasks: [...parsed.tasks, ...missingSeedTasks],
       };
     }
